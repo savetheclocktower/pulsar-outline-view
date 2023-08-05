@@ -33,7 +33,7 @@
     "simple-git-hooks": "^2.9.0"
   },
   "simple-git-hooks": {
-    "post-commit": "npm run clean && build-commit -o dist"
+    "post-commit": "npm run clean && npx build-commit -o dist"
   },
   "consumedServices": {
     "outline-view": {
