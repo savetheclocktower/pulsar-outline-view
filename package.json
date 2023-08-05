@@ -3,7 +3,7 @@
   "main": "./dist/main",
   "types": "./lib/main.d.ts",
   "version": "0.0.0",
-  "description": "A short description of your package",
+  "description": "An outline viewer for Pulsar",
   "keywords": [],
   "scripts": {
     "build": "tsc",
@@ -12,7 +12,7 @@
     "build-commit": "npm run clean && build-commit -o dist",
     "prepublishOnly": "npm run build-commit"
   },
-  "repository": "https://github.com/atom/pulsar-outline-view",
+  "repository": "https://github.com/savetheclocktower/pulsar-outline-view",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
