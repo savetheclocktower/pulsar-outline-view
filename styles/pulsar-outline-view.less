@@ -1,0 +1,95 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+.hbox () {
+  display: flex;
+  flex-direction: row;
+}
+
+@indent-level: 1rem;
+
+@line-height: @font-size * 1.2;
+
+.outline-view {
+
+  .icon::before {
+    font-size: @font-size;
+  }
+
+  font-size: @font-size;
+  font-weight: 400;
+  color: @text-color;
+  background-color: @tree-view-background-color;
+  contain: size;
+  overflow: auto;
+  -webkit-user-select: none;
+
+  &.with-ellipsis-strategy {
+    ul.outline-list-root.outline-list {
+      min-width: unset;
+    }
+
+    .name {
+      max-width: calc(100% - @font-size);
+    }
+
+    .name-inner {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
+  ul.background-message {
+    padding-top: 50px;
+    text-align: center;
+  }
+
+  ul.outline-list-root.outline-list {
+    isolation: isolate;
+    position: relative;
+    min-width: min-content;
+    // Imitate what's built into tree-view.
+    padding: 0 10px 0 5px;
+  }
+
+  ul.outline-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .outline-list.hidden {
+    display: none;
+  }
+
+  .name {
+    position: relative;
+    .hbox();
+    align-items: center;
+
+    &::before {
+      flex: none;
+      position: relative;
+      top: -1px;
+      text-align: center;
+      margin-right: 5px;
+    }
+  }
+
+  .name-inner {
+    display: block;
+    max-width: 100%;
+  }
+
+  .outline-view-option.list-item {
+    .hbox();
+    align-items: center;
+
+    &::before {
+      flex: none;
+    }
+  }
+}

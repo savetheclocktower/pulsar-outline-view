@@ -1,0 +1,76 @@
+{
+  "name": "pulsar-outline-view",
+  "main": "./dist/main",
+  "types": "./lib/main.d.ts",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "shx rm -rf dist",
+    "build-commit": "npm run clean && build-commit -o dist",
+    "prepublishOnly": "npm run build-commit"
+  },
+  "repository": "https://github.com/atom/pulsar-outline-view",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "@types/atom": "^1.40.12",
+    "classnames": "^2.3.2",
+    "etch": "^0.14.1",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
+    "atom-ide-base": "^3.3.0",
+    "build-commit": "^0.1.4",
+    "eslint": "^8.46.0"
+  },
+  "consumedServices": {
+    "outline-view": {
+      "versions": {
+        "0.1.0": "consumeOutlineProvider"
+      }
+    },
+    "symbol.provider": {
+      "description": "Allows external sources to suggest symbols for a given file or project.",
+      "versions": {
+        "1.0.0": "consumeSymbolProvider"
+      }
+    }
+  },
+  "configSchema": {
+    "visitEntriesOnKeyboardMovement": {
+      "type": "boolean",
+      "default": false,
+      "description": "Reveal symbols in the editor whenever their entries in the outline view are visited with core keyboard commands. If false, you must use `Return` (or its equivalent) to reveal a symbol after it’s been focused."
+    },
+    "showOnRightSide": {
+      "type": "boolean",
+      "default": false,
+      "description": "When enabled, outline view will appear in the right-side dock by default instead of the left-side dock."
+    },
+    "ignoredSymbolTypes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "A comma-separated list of symbol types to ignore, keyed on a symbol’s `icon` or `kind`. Hover over a symbol in the outline; if a string appears in parentheses in the tooltip, that value can be used to ignore that kind of symbol. **All descendants of an ignored symbol will also be ignored.**"
+    },
+    "nameOverflowStrategy": {
+      "type": "string",
+      "default": "scroll",
+      "enum": [
+        "scroll",
+        "ellipsis"
+      ],
+      "description": "What to do when an item’s name is too long to fit in the dock. The `scroll` option will overflow and add a horizontal scrollbar; the `ellipsis` option will truncate the symbol name with an ellipsis (`…`)."
+    }
+  }
+}

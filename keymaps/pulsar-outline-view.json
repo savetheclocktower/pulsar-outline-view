@@ -1,0 +1,13 @@
+{
+  ".outline-view": {
+    "enter": "pulsar-outline-view:activate-selected-entry",
+    "left": "pulsar-outline-view:collapse-selected-entry",
+    "escape": "pulsar-outline-view:unfocus",
+    "home": "core:move-to-top",
+    "end": "core:move-to-bottom"
+  },
+
+  ".platform-darwin": {
+    "ctrl-cmd-o": "pulsar-outline-view:show"
+  }
+}
