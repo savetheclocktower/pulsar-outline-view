@@ -34,7 +34,7 @@
     "simple-git-hooks": "^2.9.0"
   },
   "simple-git-hooks": {
-    "pre-push": "npm run build-commit"
+    "post-commit": "npm run build-commit"
   },
   "consumedServices": {
     "outline-view": {
