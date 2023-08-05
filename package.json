@@ -29,7 +29,8 @@
     "@typescript-eslint/parser": "^6.2.1",
     "atom-ide-base": "^3.3.0",
     "build-commit": "^0.1.4",
-    "eslint": "^8.46.0"
+    "eslint": "^8.46.0",
+    "shx": "^0.3.4"
   },
   "consumedServices": {
     "outline-view": {
