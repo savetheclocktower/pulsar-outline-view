@@ -9,8 +9,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "clean": "shx rm -rf dist",
-    "build-commit": "npm run clean && build-commit -o dist",
-    "prepublishOnly": "npm run build-commit"
+    "build-commit": "npm run clean && build-commit -o dist"
   },
   "repository": "https://github.com/savetheclocktower/pulsar-outline-view",
   "license": "MIT",
