@@ -2,7 +2,7 @@
   "name": "pulsar-outline-view",
   "main": "./dist/main",
   "types": "./lib/main.d.ts",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "An outline viewer for Pulsar",
   "keywords": [],
   "scripts": {
