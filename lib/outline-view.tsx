@@ -502,7 +502,7 @@ class OutlineView {
 
     let newElement = this.getClosestVisibleElementForSymbol(newSymbol);
     if (!newElement) {
-      console.error(`[pulsar-outline-view] Couldn’t find element for symbol:`, newSymbol);
+      console.error(`[pulsar-outline-view] Could not find element for symbol:`, newSymbol);
       return;
     }
 
