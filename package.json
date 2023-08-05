@@ -33,7 +33,7 @@
     "simple-git-hooks": "^2.9.0"
   },
   "simple-git-hooks": {
-    "post-commit": "npm run build-commit"
+    "post-commit": "ls -la .gitignore"
   },
   "consumedServices": {
     "outline-view": {
