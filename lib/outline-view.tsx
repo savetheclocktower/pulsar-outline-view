@@ -49,25 +49,25 @@ function interpretTokenizedText(tokenizedText: atomIde.TokenizedText): string {
 function getOctocatIconForOutlineIcon(outlineIcon?: string): string {
   switch (outlineIcon) {
     case 'type-function':
-      return 'icon-gear';
+      return 'icon-type-function';
     case 'type-method':
-      return 'icon-gear';
+      return 'icon-type-method';
     case 'type-namespace':
-      return 'icon-tag';
+      return 'icon-type-namespace';
     case 'type-variable':
-      return 'icon-code';
+      return 'icon-type-variable';
     case 'type-class':
-      return 'icon-package';
+      return 'icon-type-class';
     case 'type-constant':
-      return 'icon-primitive-dot';
+      return 'icon-type-constant';
     case 'type-property':
-      return 'icon-primitive-square';
+      return 'icon-type-property';
     case 'type-interface':
-      return 'icon-key';
+      return 'icon-type-interface';
     case 'type-constructor':
-      return 'icon-tools';
+      return 'icon-type-constructor';
     case 'type-module':
-      return 'icon-database';
+      return 'icon-type-module';
     default:
       console.warn('UNMAPPED:', outlineIcon);
       return 'icon-dash';
