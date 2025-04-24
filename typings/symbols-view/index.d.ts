@@ -57,7 +57,17 @@ export type FileSymbol = (SymbolPosition | SymbolRange) & {
   // If this text refers to the name of another symbol, it should match either
   // `name` or `shortName` of the other symbol. This gives consumers a way to
   // infer hierarchical relationships.
-  context?: string
+  context?: string,
+
+  // A string that represents an icon. This will typically take the form of a
+  // class name that starts with `icon-`, but not always, so be sure to specify
+  // the `icon-` part.
+  //
+  // If the consumer chooses to use the icon when rendering its UI, this string
+  // will be used as a class name. All of the icons provided by Atom's built-in
+  // Octicons will be available; other icons may be available depending on the
+  // user's installed packages and themes.
+  icon?: string,
 
   // POSSIBLE ENHANCEMENTS (UNIMPLEMENTED!):
   //
@@ -105,9 +115,9 @@ export type SymbolMeta = {
   query?: string,
 
   // An `AbortSignal` that represents whether the user has cancelled the task.
-  // This will happen after if the user cancels out of the symbol UI while
-  // waiting for symbols, or if they type a new character in the query field
-  // before the results have returned for the previous typed character.
+  // This will happen if the user cancels out of the symbol UI while waiting
+  // for symbols, or if they type a new character in the query field before the
+  // results have returned for the previous typed character.
   //
   // If the provider goes async at any point, it should check the signal after
   // resuming. If the signal has aborted, the provider should immediately
@@ -156,36 +166,52 @@ export interface SymbolProvider {
   // is probably how you want to pull this off.
   onShouldClearCache?(callback: () => TextEditor): void,
 
+  // Whether this provider aims to be the main symbol provider for a given
+  // file. The “exclusive” provider competes with the other workhorse providers
+  // of symbols like `ctags` and Tree-sitter to offer typical symbols like
+  // classes, method names, and the like. A maximum of one exclusive provider
+  // will be chosen for any task, depending on which one scores highest.
+  //
+  // “Supplemental” providers are those that contribute more specialized kinds
+  // of symbols. These providers generally do not compete with exclusive
+  // providers, or with each other, and can add symbols to any exclusive
+  // provider’s results.
   isExclusive?: boolean,
+
+  // Indicates whether the provider can provide symbols for a given task. Can
+  // return either a boolean or a number; boolean `true` is equivalent to a
+  // score of `1`, and boolean `false` is equivalent to a score of `0`.
+  //
+  // This method receives the same metadata bundle that will be present in the
+  // subsequent call to `getSymbols`. The provider can inspect this metadata
+  // and decide whether it can fulfill the given symbols request.
+  //
+  // Examples:
+  //
+  // * A provider that can analyze the current file, but not the entire
+  //   project, should return `false` for any requests where `type` does not
+  //   equal `file`.
+  // * A provider that works by analyzing code on disk, rather than looking at
+  //   the current unsaved contents of buffers, could return a slightly lower
+  //   score if asked to complete symbols for a file that has been modified.
+  //   This would indicate that it’d be slightly worse than usual candidate.
+  //
+  // Since language server providers will have to ask their servers about
+  // capabilities, this method can go async, though it’s strongly suggested to
+  // keep it synchronous if possible.
+  //
+  // In general, providers are encouraged not to return any scores higher than
+  // `1`, and to allow the user to break ties among providers by choosing their
+  // preferred providers in the package settings.
   canProvideSymbols(meta: PreliminarySymbolMeta): MaybePromise<boolean | number>,
-  getSymbols(meta: FileSymbolMeta): MaybePromise<FileSymbol[]>,
-  getSymbols(meta: ProjectSymbolMeta): MaybePromise<ProjectSymbol[]>
+
+  // Returns a list of symbols.
+  //
+  // If there are no results, you should return an empty array. If the request
+  // is invalid or cannot be completed — for instance, if the user cancels the
+  // task — you should return `null`.
+  //
+  // This method can go async if needed.
+  getSymbols(meta: FileSymbolMeta): MaybePromise<FileSymbol[] | null>,
+  getSymbols(meta: ProjectSymbolMeta): MaybePromise<ProjectSymbol[] | null>
 }
-
-type SymbolProviderMainModule = {
-  activate(): void,
-  deacivate(): void,
-
-  // No business logic should go in here. If a package wants to provide
-  // symbols only under certain circumstances, it should decide those
-  // circumstances on demand, rather than return this provider only
-  // conditionally.
-  //
-  // A provider author may argue that they should be allowed to inspect the
-  // environment before deciding what (or if) to return — but anything they'd
-  // inspect is something that can change mid-session. Too complicated. All
-  // provider decisions can get decided at runtime.
-  //
-  // So, for instance, if a certain provider only works with PHP files, it
-  // should return its instance here no matter what, and that instance can
-  // respond to `canProvideSymbols` with `false` if the given editor isn't
-  // using a PHP grammar. It shouldn't try to get clever and bail out
-  // entirely if, say, the project doesn't have any PHP files on load —
-  // because, of course, it _could_ add a PHP file at any point, and we're
-  // not going to revisit the decision later.
-  //
-  // We should probably allow a package to return an _array_ of providers as
-  // an alternative to returning a single provider.
-  //
-  provideSymbols(): SymbolProvider
-};

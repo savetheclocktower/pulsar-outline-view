@@ -1,7 +1,7 @@
 import { Range, TextEditor } from 'atom';
 import { Index } from './util';
 import type * as atomIde from 'atom-ide-base';
-import type * as sym from 'symbols-view-redux';
+import type * as sym from 'symbols-view';
 
 const LSP_KINDS = new Set([
   "file",

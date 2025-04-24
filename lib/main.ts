@@ -3,7 +3,7 @@ import { CompositeDisposable } from 'atom';
 import OutlineView from './outline-view';
 import ProviderBroker from './provider-broker';
 import type * as atomIde from 'atom-ide-base';
-import type * as symbol from 'symbols-view-redux';
+import type * as symbol from 'symbols-view';
 
 class PulsarOutlineView {
   protected subscriptions?: CompositeDisposable | null;
@@ -22,6 +22,9 @@ class PulsarOutlineView {
       atom.commands.add('atom-workspace', {
         'pulsar-outline-view:show': () => {
           this.getOutlineView().show();
+        },
+        'pulsar-outline-view:toggle': () => {
+          this.getOutlineView().toggle();
         }
       }),
 
