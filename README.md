@@ -2,7 +2,7 @@
 
 Displays a hierarchical outline of your file’s symbols in a sidebar.
 
-This package is a drop-in replacement for `atom-ide-outline`, but does not implement symbol search (use [symbols-view-redux][]) or call hierarchy.
+This package is a drop-in replacement for `atom-ide-outline`, but does not implement symbol search (use [symbols-view][]) or call hierarchy.
 
 <img width="1403" alt="pulsar-outline-view screenshot" src="https://github.com/savetheclocktower/pulsar-outline-view/assets/3450/0250ec54-80ac-461d-a718-f9548ed41c47">
 
@@ -18,4 +18,4 @@ When an outline provider isn’t available, `pulsar-outline-view` can fall back 
 In some cases, `pulsar-outline-view` can even infer a hierarchy from the flat list.
 
 
-[symbols-view-redux]: https://web.pulsar-edit.dev/packages/symbols-view-redux
+[symbols-view]: https://web.pulsar-edit.dev/packages/symbols-view
