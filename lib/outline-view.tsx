@@ -1,6 +1,5 @@
 /** @jsx etch.dom */
 
-import etch from 'etch';
 import {
   CompositeDisposable,
   Dock,
@@ -9,11 +8,12 @@ import {
   TextEditor,
   WorkspaceCenter
 } from 'atom';
-import ClassNames from 'classnames';
-import ProviderBroker from './provider-broker';
 import type * as atomIde from 'atom-ide-base';
+import ClassNames from 'classnames';
+import etch from 'etch';
+import ProviderBroker from './provider-broker';
 
-type SymbolEntry = {
+export type SymbolEntry = {
   name: string,
   icon?: string,
   kind?: string,
@@ -32,7 +32,6 @@ const OUTLINE_VIEW_URI = 'atom://pulsar-outline-view';
 let nextInstanceId = 1;
 let symbolId = 1;
 
-
 function isDock(item: unknown): item is Dock {
   if (item === null || typeof item !== 'object') return false;
   return item.constructor.name === 'Dock';
@@ -46,7 +45,7 @@ function interpretTokenizedText(tokenizedText: atomIde.TokenizedText): string {
   return result.join('');
 }
 
-function getOctocatIconForOutlineIcon(outlineIcon?: string): string {
+function getOctocatIconForOutlineIcon(outlineIcon?: string): string | null {
   switch (outlineIcon) {
     case 'type-function':
       return 'icon-gear';
@@ -59,9 +58,9 @@ function getOctocatIconForOutlineIcon(outlineIcon?: string): string {
     case 'type-class':
       return 'icon-package';
     case 'type-constant':
-      return 'icon-primitive-dot';
-    case 'type-property':
       return 'icon-primitive-square';
+    case 'type-property':
+      return 'icon-primitive-dot';
     case 'type-interface':
       return 'icon-key';
     case 'type-constructor':
@@ -69,8 +68,14 @@ function getOctocatIconForOutlineIcon(outlineIcon?: string): string {
     case 'type-module':
       return 'icon-database';
     default:
-      console.warn('UNMAPPED:', outlineIcon);
-      return 'icon-dash';
+      if (!outlineIcon?.startsWith('icon-')) {
+        console.warn('[pulsar-outline-view] Unmapped icon:', outlineIcon);
+      }
+      if (outlineIcon?.startsWith('type-')) {
+        // Fallback for all other icon types from `atom-ide-outline`.
+        return 'icon-dash';
+      }
+      return outlineIcon ?? null;
   }
 }
 
@@ -247,11 +252,11 @@ class OutlineView {
    * Move the selection down to the next item.
    * @param event Command event.
    */
-  moveDown(event: Event): void {
+  moveDown(event: Event) {
     return this.moveDelta(event, 1);
   }
 
-  moveDelta(event: Event, delta: number): void {
+  moveDelta(event: Event, delta: number) {
     event.stopImmediatePropagation();
     let items = this.getVisibleListItems();
 
@@ -283,8 +288,8 @@ class OutlineView {
     }
     if (items.length === 0) return;
 
-    if (index === -1) {
-      index = items.length - 1;
+    if (index < 0) {
+      index = items.length + index;
     }
 
     let symbol = this.symbolForElement(items[index] as HTMLElement);
@@ -402,16 +407,14 @@ class OutlineView {
     }
   }
 
-  populateForEditor(editor: TextEditor) {
-    this.getSymbols()
-      .then(symbols => {
-        if (!symbols || !editor) return;
-        this.setSymbols(symbols, editor);
-      });
+  async populateForEditor(editor: TextEditor) {
+    let symbols = await this.getSymbols();
+    if (!symbols || !editor) return;
+    this.setSymbols(symbols, editor);
   }
 
   toggle() {
-    atom.workspace.toggle(this);
+    return atom.workspace.toggle(this);
   }
 
   async show() {
@@ -420,7 +423,6 @@ class OutlineView {
       activatePane: false,
       activateItem: false
     });
-
     this.activate();
   }
 
@@ -502,7 +504,7 @@ class OutlineView {
 
     let newElement = this.getClosestVisibleElementForSymbol(newSymbol);
     if (!newElement) {
-      console.error(`[pulsar-outline-view] Could not find element for symbol:`, newSymbol);
+      console.error("[pulsar-outline-view] Could not find element for symbol:", newSymbol);
       return;
     }
 
@@ -593,7 +595,7 @@ class OutlineView {
         endPosition ?? startPosition
       );
 
-      let untokenizedText;
+      let untokenizedText: string | undefined = undefined;
       if (tokenizedText) {
         untokenizedText = interpretTokenizedText(tokenizedText);
       }
@@ -671,7 +673,7 @@ class OutlineView {
           ref={String(id)}
         >
           <div className={nameClasses}>
-            <div className="name-inner">{symbol.name}</div>
+            <div className="name-inner" title={titleForSymbol(symbol)}>{symbol.name}</div>
           </div>
         </li>
       );
@@ -695,7 +697,7 @@ class OutlineView {
     );
 
     let contents = (
-      <ul className='background-message'>
+      <ul className='background-message' style={{ display: 'block' }}>
         <li>No Symbols</li>
       </ul>
     );
@@ -752,7 +754,7 @@ class OutlineView {
 
   private isClickOnCaret(event: MouseEvent) {
     let element = event.target as HTMLElement;
-    if (element?.webkitMatchesSelector('.name')) return false;
+    if (element?.matches('.name')) return false;
 
     // The caret comes from generated content in a `::before` CSS rule. We
     // can't detect whether it was clicked on, but we can measure the amount of
