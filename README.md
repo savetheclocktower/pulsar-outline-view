@@ -2,9 +2,16 @@
 
 Displays a hierarchical outline of your file’s symbols in a sidebar.
 
-This package is a drop-in replacement for `atom-ide-outline`, but does not implement symbol search (use [symbols-view][]) or call hierarchy.
+This package is a drop-in replacement for `atom-ide-outline`, but does not implement symbol search (use the builtin [symbols-view][] package) or call hierarchy.
 
 <img width="1403" alt="pulsar-outline-view screenshot" src="https://github.com/savetheclocktower/pulsar-outline-view/assets/3450/0250ec54-80ac-461d-a718-f9548ed41c47">
+
+## Commands
+
+|Command|Description|Keybinding (Linux/Windows)|Keybinding (macOS)|
+|-------|-----------|------------------|-----------------|
+|`outline-view:show`|Reveal the outline view|<kbd>ctrl-alt-o</kbd>|<kbd>ctrl-cmd-o</kbd>|
+|`outline-view:toggle`|Toggle the outline view between visible and hidden| | |
 
 
 ## Outline providers
