@@ -1,7 +1,7 @@
 import { TextEditor } from 'atom';
 import SymbolProviderWrapper from './symbol-provider-wrapper';
 import type * as atomIde from 'atom-ide-base';
-import type * as symbol from 'symbols-view-redux';
+import type * as symbol from 'symbols-view';
 declare class ProviderBroker {
     protected providers: atomIde.OutlineProvider[];
     protected symbolProviderWrapper: SymbolProviderWrapper;

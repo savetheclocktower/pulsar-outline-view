@@ -1,6 +1,6 @@
 import { TextEditor } from 'atom';
 import type * as atomIde from 'atom-ide-base';
-import type * as sym from 'symbols-view-redux';
+import type * as sym from 'symbols-view';
 /**
  * Consumes the `symbol.provider` service and adapts its providers into an
  * outline provider. Designed to be chosen only when a more suitable outline
@@ -15,14 +15,21 @@ declare class SymbolProviderWrapper implements atomIde.OutlineProvider {
     constructor();
     addSymbolProvider(...providers: sym.SymbolProvider[]): void;
     removeSymbolProvider(...providers: sym.SymbolProvider[]): void;
-    getScoreBoost(name: string, packageName: string, preferredProviders: string[]): number;
+    private getScoreBoost;
     /**
-     * If the `symbols-view-redux` package is installed, this package will the
+     * If the `symbols-view` package is installed, this package will use the
      * user's configured ranking of various providers.
      */
-    getSelectedProviders(meta: sym.SymbolMeta): Promise<sym.SymbolProvider[]>;
-    getOutline(editor: TextEditor): Promise<{
-        outlineTrees: atomIde.OutlineTree[];
-    } | null>;
+    private getSelectedProviders;
+    /**
+     * Asks its various providers for symbols, then assembles them into an outline.
+     *
+     * Will typically be a flat list, but some heuristics are used to infer
+     * hierarchy based on metadata.
+     *
+     * @param  editor A text editor.
+     * @returns An `Outline` data structure or `null`.
+     */
+    getOutline(editor: TextEditor): Promise<atomIde.Outline | null>;
 }
 export default SymbolProviderWrapper;

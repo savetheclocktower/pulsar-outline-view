@@ -1,9 +1,9 @@
 /** @jsx etch.dom */
-import etch from 'etch';
 import { CompositeDisposable, Emitter, Range, TextEditor } from 'atom';
-import ProviderBroker from './provider-broker';
 import type * as atomIde from 'atom-ide-base';
-type SymbolEntry = {
+import etch from 'etch';
+import ProviderBroker from './provider-broker';
+export type SymbolEntry = {
     name: string;
     icon?: string;
     kind?: string;
@@ -74,8 +74,8 @@ declare class OutlineView {
     symbolForElement(element: HTMLElement): SymbolEntry | null;
     handleEditorEvents(): void;
     switchToEditor(editor: TextEditor): void;
-    populateForEditor(editor: TextEditor): void;
-    toggle(): void;
+    populateForEditor(editor: TextEditor): Promise<void>;
+    toggle(): Promise<void>;
     show(): Promise<void>;
     activate(): void;
     hide(): void;
