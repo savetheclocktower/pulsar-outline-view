@@ -7,6 +7,10 @@
     "end": "core:move-to-bottom"
   },
 
+  ".platform-win32, .platform-linux": {
+    "ctrl-alt-o": "pulsar-outline-view:show"
+  },
+
   ".platform-darwin": {
     "ctrl-cmd-o": "pulsar-outline-view:show"
   }
