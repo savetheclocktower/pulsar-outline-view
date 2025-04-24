@@ -4,7 +4,7 @@ type Props = object;
 
 /** Etch element extra props */
 interface EtchExtraProps {
-  ref?: string
+  // ref?: string
   className?: string
   on?: {
     click?: (e: MouseEvent) => any
@@ -59,8 +59,7 @@ type ChildSpec = SingleOrArray<string | number | EtchJSXElement | null>;
 
 // Defines a JSX.IntrinsicElements object.
 type HTMLElementTagNameMapWithOptionals = {
-  [K in keyof HTMLElementTagNameMap]: Partial<HTMLElementTagNameMap[K]> &
-    { ref?: string }
+  [K in keyof HTMLElementTagNameMap]: Partial<Omit<HTMLElementTagNameMap[K], 'style'>> & { ref?: string, style?: Partial<CSSStyleDeclaration> }
 };
 
 type ElementClassConstructor<T extends JSX.ElementClass> = new (props: T["props"], children: EtchJSXElement[]) => T;
