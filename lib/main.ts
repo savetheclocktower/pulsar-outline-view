@@ -1,9 +1,8 @@
-
 import { CompositeDisposable } from 'atom';
 import OutlineView from './outline-view';
 import ProviderBroker from './provider-broker';
 import type * as atomIde from 'atom-ide-base';
-import type * as symbol from 'symbols-view';
+import type * as symbol from './symbols-view';
 
 class PulsarOutlineView {
   protected subscriptions?: CompositeDisposable | null;
