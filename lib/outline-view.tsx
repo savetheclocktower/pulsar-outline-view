@@ -177,7 +177,7 @@ class OutlineView {
   }
 
   isPermanentDockItem() {
-    return true;
+    return false;
   }
 
   getPreferredWidth() {
