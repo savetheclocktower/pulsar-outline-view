@@ -181,10 +181,10 @@ class OutlineView {
   }
 
   getPreferredWidth() {
-    if (!this.refs) return;
-    this.refs.list.style.width === 'min-content';
+    if (!this.refs || !this.refs.list) return;
+    this.refs.list.style.width = 'min-content';
     let result = this.refs.list.offsetWidth;
-    this.refs.list.style.width === '';
+    this.refs.list.style.width = '';
     return result;
   }
 
